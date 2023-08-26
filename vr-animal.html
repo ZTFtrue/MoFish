@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>VR-Animal</title>
+	<link rel="manifest" href="./manifest.json">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+	<script>
+	</script>
+	<style>
+	</style>
+</head>
+
+<body>
+	<div id="nextbutton" style="display: none; z-index: 10">
+		<h2>Next Animation</h2>
+	</div>
+	<audio id="audio1" loop  style="display: none; z-index: 10" src="./audio/sandy-beach-calm-waves-water-nature-sounds-8052.mp3"></audio>
+	<video style="position: absolute;
+		top: 0;left: 0;right: 0;bottom: 0;
+		z-index: -2;height: 100%;width: 100%;object-fit:cover;" muted playsinline id="video" autoplay></video>
+	<a-scene next-button xrextras-gesture-detector landing-page xrextras-loading xrextras-runtime-error
+		renderer="precision: mediump; antialias: false; alpha: true; logarithmicDepthBuffer: true; colorManagement: true;"
+		xrweb="allowedDevices: any"  >
+		<!-- <a-sky src="../img/sky.jpg" rotation="0 -130 0"></a-sky> -->
+		<a-text color="white" value="Hello world" width="6" position="-0.6 2.5 -2.5" rotation="0 0 0"></a-text>
+		<a-assets>
+			<a-asset-item id="Aerobaticairplane" src="./3d/Aerobatic airplane1.glb"></a-asset-item>
+			<a-asset-item id="Cuckooclock" src="./3d/Cuckoo clock1.glb"></a-asset-item>
+			<a-asset-item id="DriedFlatStarfish" src="./3d/Dried Flat Starfish1.glb"></a-asset-item>
+			<a-asset-item id="Jugglingoctopus" src="./3d/Juggling octopus1.glb"></a-asset-item>
+			<a-asset-item id="LandscapewithWaterfall" src="./3d/Landscape with Waterfall1.glb"></a-asset-item>
+			<a-asset-item id="Redseaurchin" src="./3d/Red sea urchin1.glb"></a-asset-item>
+			<a-asset-item id="Rose" src="./3d/Rose1.glb"></a-asset-item>
+			<a-asset-item id="Swimmingfish" src="./3d/Swimming fish1.glb"></a-asset-item>
+		</a-assets>
+	
+		<a-entity id="Aerobaticairplane"   position="0 2 -0" material="opacity: 0.0; transparent: true"
+			rotation="0 45 20" scale="1 1 1" animation-mixer="loop: repeat;clip:idle" geometry="primitive: plane"
+			gltf-model="#Aerobaticairplane" modify-materials></a-entity>
+		<a-entity id="Cuckooclock"   position="-2 2 -1.5" material="opacity: 0.0; transparent: true"
+			scale="1 1 1" animation-mixer="loop: 'repeat'; crossFadeDuration: 0.4;" draw="width: 512; height: 512;"
+			geometry="primitive: plane" gltf-model="#Cuckooclock" modify-materials></a-entity>
+		<a-entity id="DriedFlatStarfish"   position="0 -2 -1.5" material="opacity: 0.0; transparent: true"
+			scale="10 10 10" animation-mixer="loop: 'repeat'; crossFadeDuration: 0.4;" rotation="90 45 20"
+			geometry="primitive: plane" gltf-model="#DriedFlatStarfish" modify-materials></a-entity>
+		<a-entity id="Jugglingoctopus"   position="-0.6 -1 -2.5" material="opacity: 0.0; transparent: true"
+			scale="1 1 1" animation-mixer="loop: 'repeat'; crossFadeDuration: 0.4;" draw="width: 512; height: 512;"
+			geometry="primitive: plane" gltf-model="#Jugglingoctopus" modify-materials></a-entity>
+		<a-entity id="LandscapewithWaterfall"   position="0 1.3 -2.5"
+			material="opacity: 0.0; transparent: true" scale="10 10 10"
+			animation-mixer="loop: 'repeat'; crossFadeDuration: 0.4;" draw="width: 512; height: 512;"
+			geometry="primitive: plane" gltf-model="#LandscapewithWaterfall" modify-materials></a-entity>
+		<a-entity  position="1 -2 -2.5" material="opacity: 0.0; transparent: true" scale="5 5 5"
+			animation-mixer="loop: 'repeat'; crossFadeDuration: 0.4;" draw="width: 512; height: 512;"
+			geometry="primitive: plane" gltf-model="#Redseaurchin" modify-materials></a-entity>
+		<a-entity  position="0 2 -2.5" material="opacity: 0.0; transparent: true" scale="10 10 10"
+			animation-mixer="loop: 'repeat'; crossFadeDuration: 0.4;" rotation="45 0 0" geometry="primitive: plane"
+			gltf-model="#Rose" modify-materials></a-entity>
+		<a-entity   position="-5 -6 -6" material="opacity: 0.0; transparent: true" scale="0.5 0.5 0.5"
+			animation-mixer="loop: 'repeat'; crossFadeDuration: 0.4;" gltf-model="#Swimmingfish"
+			modify-materials></a-entity>
+		<a-entity light="type: ambient; color: #FFFFFF;intensity: 1"></a-entity>
+		<a-entity light="type: directional; color: blue; intensity: 0.6" position="-0.5 1 1"></a-entity>
+	</a-scene>
+
+
+	<script>
+		function openCamera() {
+			if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+				const constraints = {
+					video: {
+						// width: window.innerHeight*3,
+						// height:  window.innerHeight*2,
+						facingMode: {
+							exact: "environment"
+						},
+						width: { ideal: 1920 },
+						height: { ideal: 1080 }
+					},
+					audio: false
+				};
+				navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+					video = document.getElementById('video');
+					video.srcObject = stream;
+					video.onloadedmetadata = () => {
+						video.setAttribute('width', video.videoWidth);
+						video.setAttribute('height', video.videoHeight);
+						video.play();
+					};
+				}).catch(function (error) {
+
+				});
+			} else {
+				console.error('MediaDevices interface not available.');
+			}
+		}
+		openCamera();
+	</script>
+	<script>
+		function play() {
+			document.getElementById("audio1").play();
+		}
+		document.addEventListener('click', ()=>{
+			play()
+			document.removeEventListener('click', this)
+		})
+		// AFRAME.registerComponent('next-button', {
+		// 	init() {
+		// 		const nextButton = document.getElementById('nextbutton')
+		// 		nextButton.style.display = 'block'
+		// 		const nextAnimation = () => {
+		// 			console.log(111)
+		// 			play()
+		// 		}
+		// 		nextButton.onclick = nextAnimation 
+		// 		console.log(nextButton.onclick) // Switch to the next animation when the button is pressed.
+		// 	},
+		// })
+	</script>
+</body>
+
+</html>
